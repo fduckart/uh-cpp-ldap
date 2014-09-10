@@ -1,0 +1,33 @@
+#!/bin/bash
+
+function runApp() {
+
+  local PROGNAME="ldapuh"
+
+  # Remove previous program.
+  if [[ -e "${PROGNAME}" ]]
+  then
+    rm -f "${PROGNAME}"
+  fi 
+
+  clear
+  echo ".............................................."
+  echo "Running ${PROGNAME} build & run script..."
+
+  make "${PROGNAME}"
+  if [[ ! -e "${PROGNAME}" ]]
+  then
+    echo "Error: Did not build ${PROGNAME}."
+    exit 1  # Didn't get made.
+  fi
+
+  # Okay, run the program a few times.
+  echo ".............................................."
+  ./${PROGNAME} duckart
+  ./${PROGNAME} duckart@hawaii.edu
+  ./${PROGNAME} frank.duckart@hawaii.edu
+  ./${PROGNAME} 17958670
+}
+
+runApp
+exit 0
