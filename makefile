@@ -4,14 +4,14 @@
 CC = /usr/bin/g++
 
 # Compiler flags
-CFLAGS = -Wno-write-strings -g -Wall -c 
+CFLAGS = -Wno-write-strings -g -Wall -c -Wno-deprecated
 
-# Linker flags 
+# Linker flags
 LDFLAGS = -llber -lldap -o
 
 PROG0 = ldapuh
 
-ALL_PROGRAMS = $(PROG0)  
+ALL_PROGRAMS = $(PROG0)
 
 # Source files.
 PROG00_OBJS = ldapuh.o
