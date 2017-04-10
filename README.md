@@ -6,31 +6,31 @@ LDAP C++ Demonstration Application
 **Overview**
 
 The program demonstrates how to do a simple LDAP search
-of the University of Hawaii LDAP service. 
+of the University of Hawaii LDAP service.
 
-This project uses the test server and requires that you 
+This project uses the test server and requires that you
 specify a password for the special DN in the program
-properties file (ldapuh.properties). The 'filedrop' 
-special DN is specified in the properties and should 
+properties file (ldapuh.properties). The 'filedrop'
+special DN is specified in the properties and should
 most likey be changed to whatever one you want to use.
 
 **Technology**
 
-The program was developed on Apple Mac OS X using 
+The program was developed on Apple Mac OS X using
 GNU g++ version 4.2.1 and GNU make. There is a test
 runner bash script developed on Mac OS X.
 
 **Building the Program**
 
     $ make all
-    
+
 **Cleaning up**
 
     $ make clean
 
 **Running the program**
 
-Here are the commands (and their output) 
+Here are the commands (and their output)
 that you can use to run the program:
 
     duckart:uh-cpp-ldap duckart$ make all
@@ -41,49 +41,49 @@ that you can use to run the program:
 
     duckart:uh-cpp-ldap duckart$ ./ldapuh duckart
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
 
     duckart:uh-cpp-ldap duckart$ ./ldapuh duckart@hawaii.edu
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
 
     duckart:uh-cpp-ldap duckart$ ./ldapuh frank.duckart@hawaii.edu
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
 
 **Running the test Bash script**
 
-    duckart:uh-cpp-ldap duckart$ ./build-and-run-app.bsh 
+    duckart:uh-cpp-ldap duckart$ ./build-and-run-app.bsh
     ..............................................
     Running ldapuh build & run script...
     /usr/bin/g++ -llber -lldap -o ldapuh ldapuh.o ldap.o host.o
     ..............................................
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
     uid: duckart
-    uhuuid: 17958670
+    uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
