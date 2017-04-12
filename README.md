@@ -33,27 +33,27 @@ runner bash script developed on Mac OS X.
 Here are the commands (and their output)
 that you can use to run the program:
 
-    duckart:uh-cpp-ldap duckart$ make all
+    $ make all
     /usr/bin/g++ -Wno-write-strings -g -Wall -c  ldapuh.cpp
     /usr/bin/g++ -Wno-write-strings -g -Wall -c  ldap.cpp
     /usr/bin/g++ -Wno-write-strings -g -Wall -c  host.cpp
     /usr/bin/g++ -llber -lldap -o ldapuh ldapuh.o ldap.o host.o
 
-    duckart:uh-cpp-ldap duckart$ ./ldapuh duckart
+    $ ./ldapuh duckart
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
 
-    duckart:uh-cpp-ldap duckart$ ./ldapuh duckart@hawaii.edu
+    $ ./ldapuh duckart@hawaii.edu
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
     ..............................................
 
-    duckart:uh-cpp-ldap duckart$ ./ldapuh frank.duckart@hawaii.edu
+    $ ./ldapuh frank.duckart@hawaii.edu
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
@@ -62,7 +62,7 @@ that you can use to run the program:
 
 **Running the test Bash script**
 
-    duckart:uh-cpp-ldap duckart$ ./build-and-run-app.bsh
+    $ ./build-and-run-app.bsh
     ..............................................
     Running ldapuh build & run script...
     /usr/bin/g++ -llber -lldap -o ldapuh ldapuh.o ldap.o host.o
