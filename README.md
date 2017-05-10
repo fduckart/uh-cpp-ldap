@@ -44,6 +44,7 @@ that you can use to run the program:
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
 
     $ ./ldapuh duckart@hawaii.edu
@@ -51,6 +52,7 @@ that you can use to run the program:
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
 
     $ ./ldapuh frank.duckart@hawaii.edu
@@ -58,6 +60,7 @@ that you can use to run the program:
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
 
 **Running the test Bash script**
@@ -71,19 +74,23 @@ that you can use to run the program:
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
     uid: duckart
     uhuuid: 12345678
     mail: duckart@hawaii.edu
     mail: frank.duckart@hawaii.edu
+    cn: Frank R Duckart
     ..............................................
