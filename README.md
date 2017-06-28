@@ -14,12 +14,6 @@ properties file (ldapuh.properties). The 'filedrop'
 special DN is specified in the properties and should
 most likey be changed to whatever one you want to use.
 
-**Technology**
-
-The program was developed on Apple Mac OS X using
-GNU g++ version 4.2.1 and GNU make. There is a test
-runner bash script developed on Mac OS X.
-
 **Building the Program**
 
     $ make all
@@ -94,3 +88,10 @@ that you can use to run the program:
     mail: frank.duckart@hawaii.edu
     cn: Frank R Duckart
     ..............................................
+
+
+**Technology**
+
+The program was developed on Apple Mac OS X using
+GNU g++ version 4.2.1 and GNU make. There is a test
+runner bash script developed on Mac OS X.
