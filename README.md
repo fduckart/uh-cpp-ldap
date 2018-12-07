@@ -10,9 +10,9 @@ of the University of Hawaii LDAP service.
 
 This project uses the test server and requires that you
 specify a password for the special DN in the program
-properties file (ldapuh.properties). The 'filedrop'
+properties file (ldapuh.properties). An application
 special DN is specified in the properties and should
-most likey be changed to whatever one you want to use.
+most likely be changed to whatever one you want to use.
 
 **Building the Program**
 
