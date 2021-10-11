@@ -1,3 +1,5 @@
+[![C++ CI](https://github.com/fduckart/uh-cpp-ldap/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/fduckart/uh-cpp-ldap/actions/workflows/c-cpp.yml)
+
 uh-cpp-ldap
 ===========
 
