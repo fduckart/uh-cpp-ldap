@@ -10,11 +10,10 @@ LDAP C++ Demonstration Application
 The program demonstrates how to do a simple LDAP search
 of the University of Hawaii LDAP service.
 
-This project uses the test server and requires that you
-specify a password for the special DN in the program
-properties file (ldapuh.properties). An application
-special DN is specified in the properties and should
-most likely be changed to whatever one you want to use.
+This project requires that you specify a password for
+the special DN in the program properties file (ldapuh.properties).
+An application special DN is specified in the properties and
+should most likely be changed to whatever one you want to use.
 
 **Building the Program**
 
@@ -35,28 +34,28 @@ that you can use to run the program:
     /usr/bin/g++ -Wno-write-strings -g -Wall -c  host.cpp
     /usr/bin/g++ -llber -lldap -o ldapuh ldapuh.o ldap.o host.o
 
-    $ ./ldapuh duckart
-    uid: duckart
+    $ ./ldapuh duckarts
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
 
-    $ ./ldapuh duckart@hawaii.edu
-    uid: duckart
+    $ ./ldapuh duckarts@hawaii.edu
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
 
-    $ ./ldapuh frank.duckart@hawaii.edu
-    uid: duckart
+    $ ./ldapuh frank.duckarts@hawaii.edu
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
 
 **Running the test Bash script**
@@ -66,29 +65,29 @@ that you can use to run the program:
     Running ldapuh build & run script...
     /usr/bin/g++ -llber -lldap -o ldapuh ldapuh.o ldap.o host.o
     ..............................................
-    uid: duckart
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
-    uid: duckart
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
-    uid: duckart
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
-    uid: duckart
+    uid: duckarts
     uhuuid: 12345678
-    mail: duckart@hawaii.edu
-    mail: frank.duckart@hawaii.edu
-    cn: Frank R Duckart
+    mail: duckarts@hawaii.edu
+    mail: frank.duckarts@hawaii.edu
+    cn: Frank R Duckarts
     ..............................................
 
 
