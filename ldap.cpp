@@ -1,4 +1,3 @@
-#include <ldap.h>
 #include <iostream>
 #include <assert.h>
 #include "host.h"
@@ -31,16 +30,19 @@ Ldap::~Ldap()
     host = 0;
 }
 
-void Ldap::initialize() {
+void Ldap::initialize()
+{
     ldap_initialize(&ld, host->getUrl().c_str());
 }
 
-void Ldap::set_options() {
+void Ldap::set_options()
+{
     const int option = LDAP_VERSION3;
     ldap_set_option(ld, LDAP_OPT_PROTOCOL_VERSION, &option);
 }
 
-void Ldap::bind() {
+void Ldap::bind()
+{
     // Bind to the server.
     int result = ldap_simple_bind_s(ld,
                                     host->getBindDn().c_str(),
@@ -51,18 +53,21 @@ void Ldap::bind() {
     }
 }
 
-void Ldap::unbind() {
+void Ldap::unbind()
+{
     ldap_unbind(ld);
 }
 
-void Ldap::search(const string value) {
+void Ldap::search(const string value)
+{
     LDAPMessage * answer = searchp(value);
     count_entries(answer);
     print(answer);
     ldap_msgfree(answer);
 }
 
-LDAPMessage * Ldap::searchp(const string value) {
+LDAPMessage * Ldap::searchp(const string value)
+{
     const string filter = "(|(uid=" + value + ")"
         + "(mail=" + value + ")"
         + "(uhuuid=" + value + "))";
@@ -85,7 +90,8 @@ LDAPMessage * Ldap::searchp(const string value) {
     return res;
 }
 
-void Ldap::count_entries(LDAPMessage *answer) {
+void Ldap::count_entries(LDAPMessage *answer)
+{
     // Return the number of objects found during the search.
     int entries_found = ldap_count_entries(ld, answer);
     if (entries_found == 0) {
@@ -93,7 +99,8 @@ void Ldap::count_entries(LDAPMessage *answer) {
     }
 }
 
-void Ldap::print(LDAPMessage *answer) {
+void Ldap::print(LDAPMessage *answer)
+{
     LDAPMessage *entry;
     BerElement *ber;
     char *attribute     = "";
