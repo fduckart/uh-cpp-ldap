@@ -12,8 +12,6 @@ of the University of Hawaii LDAP service.
 
 This project requires that you specify a password for
 the special DN in the program properties file (ldapuh.properties).
-An application special DN is specified in the properties and
-should most likely be changed to whatever one you want to use.
 
 **Building the Program**
 

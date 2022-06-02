@@ -1,2 +1,5 @@
 ldapuh
 *.o
+ldapuh.properties
+.idea/
+output.txt

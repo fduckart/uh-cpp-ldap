@@ -1,14 +1,19 @@
-#include <iostream>
 #include <assert.h>
+#include <fstream>
+#include <iostream>
+#include <ldap.h>
+#include<sstream>
+#include<vector>
 #include "host.h"
 #include "ldap.h"
 
 using namespace std;
 
 // Standard constructor.
-Ldap::Ldap() : host(new Host())
+Ldap::Ldap()
 {
-    assert(host != 0);
+    properties = readPropertiesFile("ldapuh.properties");
+    host = new Host(properties);
 
     initialize();
     set_options();
@@ -43,12 +48,18 @@ void Ldap::set_options()
 
 void Ldap::bind()
 {
-    // Bind to the server.
-    int result = ldap_simple_bind_s(ld,
-                                    host->getBindDn().c_str(),
-                                    host->getPassword().c_str());
+    BerValue credentials;
+    credentials.bv_val = (char*) malloc(host->getPassword().size() * sizeof(char));
+    host->getPassword().copy(credentials.bv_val, string::npos);
+    credentials.bv_len = host->getPassword().size();
+
+    int result = ldap_sasl_bind_s(ld,
+                                  host->getBindDn().c_str(),
+                                  LDAP_SASL_SIMPLE,
+                                  &credentials,
+                                  nullptr, nullptr, nullptr);
     if (result != LDAP_SUCCESS) {
-        cerr << "ldap_simple_bind_s: " << ldap_err2string(result) << endl;
+        cerr << "bind error: " << ldap_err2string(result) << endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -66,22 +77,50 @@ void Ldap::search(const string value)
     ldap_msgfree(answer);
 }
 
+vector<char*> Ldap::attributes()
+{
+    vector<char*>  vc;
+    string attrs =  trim(properties["ldapuh.attributes"]);
+    if (attrs.size() > 0) {
+        vector<string> vs;
+        stringstream s_stream(attrs);
+        while (s_stream.good()) {
+            string substr;
+            getline(s_stream, substr, ',');
+            vs.push_back(substr);
+        }
+        transform(vs.begin(), vs.end(), std::back_inserter(vc), convert);
+    }
+    vc.push_back(NULL);
+
+    return vc;
+}
+
 LDAPMessage * Ldap::searchp(const string value)
 {
     const string filter = "(|(uid=" + value + ")"
         + "(mail=" + value + ")"
         + "(uhuuid=" + value + "))";
-    char *attrs[]       = {"uid", "uhuuid", "mail", "cn", NULL};
-    const int  attrsonly      = 0;
+
+    vector<char*> ats = attributes();
+    char **attry = ats.data();
+    const int  attrsonly  = 0;
     LDAPMessage *res;
 
     int result = ldap_search_s(ld,
                               host->getBase().c_str(),
                               LDAP_SCOPE_SUBTREE,
                               filter.c_str(),
-                              attrs,
+                              attry,
                               attrsonly,
                               &res);
+
+    for (size_t i = 0; i < ats.size(); i++) {
+        if (ats[i] != NULL) {
+            delete [] ats[i];
+        }
+    }
+
     if (result != LDAP_SUCCESS) {
         cerr << "ldap_search_s: " << ldap_err2string(result) << endl;
         exit(EXIT_FAILURE);
@@ -92,7 +131,6 @@ LDAPMessage * Ldap::searchp(const string value)
 
 void Ldap::count_entries(LDAPMessage *answer)
 {
-    // Return the number of objects found during the search.
     int entries_found = ldap_count_entries(ld, answer);
     if (entries_found == 0) {
         exit(EXIT_FAILURE);
@@ -101,27 +139,96 @@ void Ldap::count_entries(LDAPMessage *answer)
 
 void Ldap::print(LDAPMessage *answer)
 {
-    LDAPMessage *entry;
     BerElement *ber;
-    char *attribute     = "";
+    char *attribute = "";
     char **values;
 
     // Cycle through all objects returned with our search.
-    for (entry = ldap_first_entry(ld, answer);
+    for (LDAPMessage *entry = ldap_first_entry(ld, answer);
          entry != NULL;
          entry = ldap_next_entry(ld, entry)) {
-      // Cycle through all returned attributes.
-      for (attribute = ldap_first_attribute(ld, entry, &ber);
-           attribute != NULL;
-           attribute = ldap_next_attribute(ld, entry, ber)) {
-        if ((values = ldap_get_values(ld, entry, attribute)) != NULL) {
-          // Cycle through all values returned for this attribute.
-          for (int i = 0; values[i] != NULL; i++) {
-            cout << attribute << ": " << values[i] << endl;
-          }
-          ldap_value_free(values);
+        // Cycle through all returned attributes.
+        for (attribute = ldap_first_attribute(ld, entry, &ber);
+             attribute != NULL;
+             attribute = ldap_next_attribute(ld, entry, ber)) {
+            if ((values = ldap_get_values(ld, entry, attribute)) != NULL) {
+                // Cycle through all values returned for this attribute.
+                for (int i = 0; values[i] != NULL; i++) {
+                    cout << attribute << ": " << values[i] << endl;
+                }
+                ldap_value_free(values);
+            }
         }
-      }
     }
-    cout << ".............................................." << endl;
+    cout << ">------------------------------------------------------------<";
+    cout << endl;
+}
+
+map<string, string> Ldap::readPropertiesFile(string filename)
+{
+    map<string, string> propertyMap;
+
+    vector<string> lines = readFile(filename);
+    for (unsigned int i = 0; i < lines.size(); i++) {
+
+        string str(lines[i]);
+        string::size_type lastPos = str.size();
+
+        // Find the first '=' character, and then
+        // separate the key and value from each other.
+        string::size_type pos = str.find_first_of('=', 0);
+        if (string::npos != pos || string::npos != lastPos) {
+            const string key = trim(str.substr(0, pos));
+            string value = trim(str.substr(pos + 1, lastPos));
+            propertyMap[key.data()] = value;
+        }
+    }
+
+    return propertyMap;
+}
+
+vector<string> Ldap::readFile(string fileName)
+{
+    ifstream inFile(fileName.data(), ios::in);
+    if (!inFile) {
+        cerr << "File could not be opened..\n";
+        exit(1);
+    }
+
+    vector<string> lines;
+    string line;
+    while (inFile && !inFile.eof()) {
+        getline(inFile, line);
+        line = trim(line);
+        int len = line.size();
+        if (len > 1) {
+            lines.push_back(line.substr(0, line.size()));
+        }
+    }
+
+    inFile.close();
+
+    return lines;
+}
+
+const string Ldap::trim(const string& s)
+{
+    if (s.length() == 0)
+        return s;
+
+    int f = s.find_first_not_of(" \t");  // Find first char.
+    int e = s.find_last_not_of(" \t");   // Find ending char.
+
+    if (e == -1)
+        return "";  // Didn't find any chars.
+
+    return string(s, f, e - f + 1);  // Trim off spaces.
+}
+
+char * Ldap::convert(const string & s)
+{
+    char *pc = new char[s.size()+1];
+    std::strcpy(pc, s.c_str());
+
+    return pc;
 }

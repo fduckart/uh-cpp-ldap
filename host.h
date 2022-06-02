@@ -9,26 +9,20 @@ using namespace std;
 
 class Host {
     public:
-        Host(); 
+        Host(map<string, string>);
         Host(const Host &);
         ~Host();
 
-        void readProperties();
-        
         const string getUrl();
         const string getPassword();
         const string getBindDn();
         const string getBase();
-    
+
     private:
         string url;
         string password;
         string bindDn;
-        string base;  
-        
-        vector<string> readFile(string);
-        map<string, string> getFieldValueMap(string);
-        const string trim(const string& s);
+        string base;
 };
 
 #endif
