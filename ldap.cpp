@@ -7,12 +7,16 @@
 #include "host.h"
 #include "ldap.h"
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 using namespace std;
 
 // Standard constructor.
 Ldap::Ldap()
 {
-    properties = readPropertiesFile("ldapuh.properties");
+    properties = readProperties();
     host = new Host(properties);
 
     initialize();
@@ -164,10 +168,25 @@ void Ldap::print(LDAPMessage *answer)
     cout << endl;
 }
 
-map<string, string> Ldap::readPropertiesFile(string filename)
+string Ldap::propertiesPath()
+{
+    struct passwd *pw = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
+    const char *username = pw->pw_name;
+    string propertiesPath = string(homedir);
+    propertiesPath.append("/.");
+    propertiesPath.append(username);
+    propertiesPath.append("-conf");
+    propertiesPath.append("/ldapuh.properties");
+
+    return propertiesPath;
+}
+
+map<string, string> Ldap::readProperties()
 {
     map<string, string> propertyMap;
 
+    string filename = propertiesPath();
     vector<string> lines = readFile(filename);
     for (unsigned int i = 0; i < lines.size(); i++) {
 
@@ -187,11 +206,11 @@ map<string, string> Ldap::readPropertiesFile(string filename)
     return propertyMap;
 }
 
-vector<string> Ldap::readFile(string fileName)
+vector<string> Ldap::readFile(string filename)
 {
-    ifstream inFile(fileName.data(), ios::in);
+    ifstream inFile(filename.data(), ios::in);
     if (!inFile) {
-        cerr << "File could not be opened..\n";
+        cerr << "File '" << filename << "' could not be opened.\n";
         exit(1);
     }
 

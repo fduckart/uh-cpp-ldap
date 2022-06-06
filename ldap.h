@@ -29,7 +29,8 @@ class Ldap {
         void count_entries(LDAPMessage *);
         void print(LDAPMessage *);
 
-        map<string, string> readPropertiesFile(string);
+        string propertiesPath();
+        map<string, string> readProperties();
         vector<string> readFile(string);
         const string trim(const string& s);
         static char *convert(const std::string & s);
